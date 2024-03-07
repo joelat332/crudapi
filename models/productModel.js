@@ -18,14 +18,14 @@ const productSchema= mongoose.Schema(
             type:String
         }        
         },
-        externalReference:{
+        externalReference:[{
         id:{
             type:String
         },
         source:{
             type:String
         }
-        }
+        }]
 }
 )
 
