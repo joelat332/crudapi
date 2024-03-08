@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --coverage --testTimeout=5000",
     "serve": "node server.js",
     "jo": "nodemon server.js"
   },
@@ -12,12 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "express-validation": "^4.1.0",
+    "jest": "^29.7.0",
     "joi": "^17.12.2",
     "mongodb": "^6.4.0",
-    "mongoose": "^8.2.0"
+    "mongoose": "^8.2.0",
+    "supertest": "^6.3.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

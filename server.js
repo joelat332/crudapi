@@ -31,3 +31,5 @@ connectMongoDb(MONGO_URL)
 }).catch((error) => {
     console.log(error)
 })
+
+module.exports=app;
