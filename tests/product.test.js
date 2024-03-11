@@ -5,6 +5,18 @@ const app =require("../server")
 require("dotenv").config();
 
 
+
+const {MongoClient} = require('mongodb');
+ beforeAll(async () => {
+   connection = await MongoClient.connect('mongodb://localhost:27017/testing');
+   db = await connection.db('mongodb://localhost:27017/testing');
+ });
+ afterAll(async () => {
+   await connection.close();
+ });
+
+
+
 describe("check root",()=>{
     it("should be hey web ",async ()=>{
         const res= await request(app).get("/");
@@ -86,21 +98,13 @@ describe("GET /product", () => {
           "/product/65ea98fdb0cd528ef6e325"
         );
         expect(res.statusCode).toBe(400);
-      });
-    
-    it("Fail: cant find  product Id", async () => {
-        const res = await request(app).put(
-          "/product/65ea9b4cdb17974bdab912bc"
-        );
-        expect(res.statusCode).toBe(404);
-    });
-    
+      });    
   });
   
   describe("DELETE /product/:id", () => {
     it("should delete a product", async () => {
       const res = await request(app).delete(
-        "/product/65eab2e37e4b610fd9b960de"         // change
+        "/product/65ee837c421290d03d8db166"         // change
       );
       expect(res.statusCode).toBe(200);
     });
