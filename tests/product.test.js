@@ -5,12 +5,13 @@ const app =require("../server")
 require("dotenv").config();
 
 
-
+let productId;
 const {MongoClient} = require('mongodb');
  beforeAll(async () => {
    connection = await MongoClient.connect('mongodb://localhost:27017/testing');
    db = await connection.db('mongodb://localhost:27017/testing');
  });
+
  afterAll(async () => {
    await connection.close();
  });
@@ -78,7 +79,11 @@ describe("GET /product", () => {
                     }
                 });
       expect(res.statusCode).toBe(200);
-    });
+      expect(res.body).toHaveProperty('_id');
+      productId = res.body._id;
+      console.log('Created product with _id:', productId);
+      
+    }); 
   });
   
   describe("PUT /products/:id", () => {
@@ -104,7 +109,7 @@ describe("GET /product", () => {
   describe("DELETE /product/:id", () => {
     it("should delete a product", async () => {
       const res = await request(app).delete(
-        "/product/65ee837c421290d03d8db166"         // change
+        `/product/${productId}`       // change
       );
       expect(res.statusCode).toBe(200);
     });
@@ -117,7 +122,7 @@ describe("GET /product", () => {
     
       it("Fail: does not exist product Id", async () => {
             const res = await request(app).delete(
-              "/product/65ea9b4cdb17974bdab912bc"
+              '/product/65ea9b4cdb17974bdab912bc'
             );
             expect(res.statusCode).toBe(404);
         });
