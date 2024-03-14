@@ -19,6 +19,7 @@
     "express-validation": "^4.1.0",
     "jest": "^29.7.0",
     "joi": "^17.12.2",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.0",
     "preset": "@shelf/jest-mongodb",

@@ -6,11 +6,24 @@ const idSchema = Joi.object({
 });
 
 class productcls{
-
 handleGetAllProduct = async (req,res) => {
     try {
-        const product =await Product.find({});
+        // let offset=req.params
+        // offset=Number(offset)
+        // if (offset==null){
+        //      offset=0;
+        // }
+        let offset=this.offset
+        let limit=10;
+        const allProducts = await Product.find({});
+        const totalProducts = allProducts.length;
+        if (offset > totalProducts) {
+            throw new error;
+        }
+        const product =await Product.find({}).skip(offset).limit(offset+limit);
+        
         res.status(200).json(product);
+        // res.status(200).json({count : product.length ,product:product.slice(offset,offset+limit)});
         
     } catch (error) {
         console.log(error.message);
