@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const app =require("../index")
-const productcls= require("../controllers/product")
+
 
 require("dotenv").config();
+
 
 
 let productId;
@@ -36,44 +37,43 @@ describe("check /joel",()=>{
     })
 })
 
+
 describe("GET /product", () => {
     it("should return all products", async () => {
-      const res = await request(app).get("/product");
+      const token = process.env.TOKEN;
+      const res = await request(app).get("/product").set('Authorization', `Bearer ${token}`);
       expect(res.statusCode).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
-    });
-    // it("Error : Catch ",async ()=>{
-    //   producttest=new productcls(500)
-    //   const res = await request(app).get("/product");
-    //   expect(res.statusCode).toBe(500)      
-
-    // })
-
-    // it("error not return all products", async () => {
-    //     const res = (await request(app).get("/product").toThrow(Error))
-    //     expect(res.statusCode).toBe(400);
-    // });   
+    });   
   });
 
   
+  
+  
   describe("GET /product/:id", () => {
     it("should return a product", async () => {
-      const res = await request(app).get(
-        "/product/65ea88ef1a1d91b496924260"//dont change
-      );
+      const token = process.env.TOKEN;
+      const res = await request(app)
+      .get(
+        "/product/65ea88ef1a1d91b496924260"
+      ).set('Authorization', `Bearer ${token}`);
       expect(res.statusCode).toBe(200);
       expect(res.body.sampleName).toBe("updatePass");
     });
     it("Fail: invaild product Id", async () => {
-        const res = await request(app).get(
+      const token = process.env.TOKEN;
+      const res = await request(app).get(
           "/product/65ea98fdb0cd528ef6e325"
-        );
+        ).set('Authorization', `Bearer ${token}`);
         expect(res.statusCode).toBe(400);
       });
    });
   
-  describe("POST /product", () => {
+  
+  
+   describe("POST /product", () => {
     it("should create a product", async () => {
+      const token = process.env.TOKEN;
       const res = await request(app).post("/product").send(
         {
                     sampleName:"test123",
@@ -86,7 +86,8 @@ describe("GET /product", () => {
                         id:"CB145",
                         source:"new"
                     }
-                });
+                })
+                .set('Authorization', `Bearer ${token}`);
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty('_id');
       productId = res.body._id;
@@ -95,46 +96,75 @@ describe("GET /product", () => {
     }); 
   });
   
+  
+  
   describe("PUT /products/:id", () => {
+
     it("should update a product", async () => {
+      const token = process.env.TOKEN;
       const res = await request(app)
         .put("/product/65ea88ef1a1d91b496924260")
         .send({
             sampleName:"updatePass",
             sampleNumber:50505
-        });
+        })
+        .set('Authorization', `Bearer ${token}`);
       expect(res.statusCode).toBe(200);
       expect(res.body.sampleNumber).toBe(50505);
     });
 
+
+    it("should update a non existing product", async () => {
+      const token = process.env.TOKEN;
+      const res = await request(app)
+        .put("/product/65eeceef56f0753b4e3d941a").send({
+          sampleName:"updatePass",
+          sampleNumber:50505
+      }).set('Authorization', `Bearer ${token}`);
+      expect(res.statusCode).toBe(404);
+    });
+
+
     it("Fail: invaild product Id", async () => {
-        const res = await request(app).put(
-          "/product/65ea98fdb0cd528ef6e325"
-        );
+      const token = process.env.TOKEN;
+      const res = await request(app)
+      .put("/product/65ea98fdb0cd528ef6e325")
+      .set('Authorization', `Bearer ${token}`);
         expect(res.statusCode).toBe(400);
-      });    
+      });
+
   });
   
+  
+  
   describe("DELETE /product/:id", () => {
+
     it("should delete a product", async () => {
+      const token = process.env.TOKEN;
       const res = await request(app).delete(
-        `/product/${productId}`       // change
-      );
+        `/product/${productId}`       
+      ).set('Authorization', `Bearer ${token}`);
       expect(res.statusCode).toBe(200);
     });
+
+
     it("Fail: invaild product Id", async () => {
-        const res = await request(app).delete(
+      const token = process.env.TOKEN;
+      const res = await request(app).delete(
           "/product/65ea98fdb0cd528ef6e325"
-        );
+        ).set('Authorization', `Bearer ${token}`);
         expect(res.statusCode).toBe(400);
       });
     
+
       it("Fail: does not exist product Id", async () => {
-            const res = await request(app).delete(
+        const token = process.env.TOKEN;
+        const res = await request(app).delete(
               '/product/65ea9b4cdb17974bdab912bc'
-            );
+            ).set('Authorization', `Bearer ${token}`);
             expect(res.statusCode).toBe(404);
         });
+
   });
   
  

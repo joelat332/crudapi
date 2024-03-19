@@ -1,8 +1,8 @@
 require('dotenv').config()
 const express = require('express');
 const {connectMongoDb}=require('./connection');
-//const authToken=require('./middleware/authorization')
-const authToken=require('auth-check-joel')
+const authToken=require('./middleware/authorization')
+//const authToken=require('auth-check-joel')
 
 const productRouter = require('./routes/product');
 const app=express();

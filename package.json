@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.0",
+    "node-cache": "^5.1.2",
     "preset": "@shelf/jest-mongodb",
     "supertest": "^6.3.4"
   },

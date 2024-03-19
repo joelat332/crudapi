@@ -4,10 +4,11 @@ const validatorscls= require('../validations/productVal');
 const router=express.Router();
 const {validate}= require('express-validation')
 
+const authorization=require('../middleware/auth')
 
-router.get('/',productcls.handleGetAllProduct)
-router.post('/',validate(validatorscls.createAndUpdateVal),productcls.handleCreateNewProduct)
-router.get('/:id',productcls.handleFindById)
-router.delete('/:id',productcls.handleDeleteProduct)
-router.put('/:id',validate(validatorscls.createAndUpdateVal),productcls.handleUpdateProduct)
+router.get('/',authorization.read,productcls.handleGetAllProduct)
+router.get('/:id',authorization.read,productcls.handleFindById)
+router.post('/',authorization.write,validate(validatorscls.createAndUpdateVal),productcls.handleCreateNewProduct)
+router.delete('/:id',authorization.write,productcls.handleDeleteProduct)
+router.put('/:id',authorization.write,validate(validatorscls.createAndUpdateVal),productcls.handleUpdateProduct)
 module.exports = router;
